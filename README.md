@@ -5,10 +5,13 @@ connect right joycon to linux bluetooth:
     long press sync key on joycon to start pairing,
     don't use "bluetoothctl scan on", joycon protocol is so old, to use:
     $ sudo bluetoothctl
-    scan off
-    scan bredr
-    pair xx:xx:xx:xx:xx:xx
-    connect xx:xx:xx:xx:xx:xx
+      scan off
+      scan bredr
+      pair xx:xx:xx:xx:xx:xx
+      connect xx:xx:xx:xx:xx:xx
+      info xx:xx:xx:xx:xx:xx
+    it will show "paired:yes", "bonded:yes", and "Connected:yes"
+    
 
 insert joycon into ringcon, then activate ringcon in linux:
 
