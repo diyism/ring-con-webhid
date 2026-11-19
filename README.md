@@ -38,7 +38,8 @@ in your suyu/yuzu/eden/... emulator:
      >> player 1 >>  connect controller: right joycon,  input device: right joycon 1
      >> player 2 >>  connect controller: dual joycon,   input device: left joycon 1
      >> advanced >>  other  >> enable direct joycon driver
-     >> advacned >>  emulated devices >> ring controller >> configure
+
+     don't do ">> advacned >>  emulated devices >> ring controller >> configure >> enable ringcon", it will disconnect ringcon from joycon
 
 ===============================================================================================
 
