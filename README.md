@@ -31,6 +31,7 @@ in your suyu/yuzu/eden/... emulator:
      >> advanced >>  other  >> enable direct joycon driver
      >> advacned >>  emulated devices >> ring controller >> configure
 
+===============================================================================================
 
 # Joy-Con WebHID
 
