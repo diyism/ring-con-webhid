@@ -7,7 +7,13 @@ connect right joycon to linux bluetooth:
     $ sudo bluetoothctl
       scan off
       scan bredr
-      pair xx:xx:xx:xx:xx:xx
+      pair xx:xx:xx:xx:xx:xx            #right joycon
+      yes
+      connect xx:xx:xx:xx:xx:xx
+      info xx:xx:xx:xx:xx:xx
+      scan bredr
+      pair xx:xx:xx:xx:xx:xx            #left joycon
+      yes
       connect xx:xx:xx:xx:xx:xx
       info xx:xx:xx:xx:xx:xx
     it will show "paired:yes", "bonded:yes", and "Connected:yes"
