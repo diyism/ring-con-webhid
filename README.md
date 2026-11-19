@@ -1,3 +1,37 @@
+forked from https://github.com/tomayac/joy-con-webhid
+
+connect right joycon to linux bluetooth:
+
+    long press sync key on joycon to start pairing,
+    don't use "bluetoothctl scan on", joycon protocol is so old, to use:
+    $ sudo bluetoothctl
+    scan off
+    scan bredr
+    pair xx:xx:xx:xx:xx:xx
+    connect xx:xx:xx:xx:xx:xx
+
+insert joycon into ringcon, then activate ringcon in linux:
+
+    $ git clone https://github.com/diyism/ring-con-webhid
+    $ cd ring-con-webhid
+    $ npm install
+    $ npm run server
+
+    in your browser, open http://127.0.0.1:8080
+    Click “Connect Joy-Cons”, select “Joy-Con (R)”, and click “Connect” to connect your Joy-Con to this web page
+    Click “Connect Ring-Con”, it will trigger Joy-Con to connect to Ring-Con, otherwise the “Ring-Con Strain” will show right Joy-Con’s pitch instead.
+    Tick “Show debug info” and scroll to the bottom of the page
+    The “Ring-Con Strain” meter will display the current pulling or squeezng intensity.
+
+in your suyu/yuzu/eden/... emulator:
+
+     settings >> controls >>
+     >> player 1 >>  connect controller: right joycon,  input device: right joycon 1
+     >> player 2 >>  connect controller: dual joycon,   input device: left joycon 1
+     >> advanced >>  other  >> enable direct joycon driver
+     >> advacned >>  emulated devices >> ring controller >> configure
+
+
 # Joy-Con WebHID
 
 A [WebHID](https://web.dev/hid) driver for
