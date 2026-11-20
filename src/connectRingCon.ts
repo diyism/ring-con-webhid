@@ -90,9 +90,8 @@ export const connectRingCon = async (device: HIDDevice): Promise<void> => {
     timeoutErrorMessage: 'ring-con not found.',
   });
   const enableRingConIMUMode = defineSendReportAsyncFunction({
-    // Experimental IMU mode 2; keep the remaining Ring-Con initialization
-    // sequence unchanged so its report layout can be observed independently.
-    subcommand: [0x40, 0x02],
+    // Ring-Con external-IMU mode.
+    subcommand: [0x40, 0x03],
     expectedReport: {
       14: 0x40,
     },
