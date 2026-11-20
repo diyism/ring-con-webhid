@@ -8,6 +8,7 @@ import type {
   Quaternion,
   CompleteJoyConDataPacket,
   HomeLEDPattern,
+  Gyroscope,
 } from './types.ts';
 import { concatTypedArrays } from './utils.ts';
 
@@ -19,6 +20,13 @@ class JoyCon extends EventTarget {
   device: HIDDevice;
   lastValues: JoyConLastValues;
   ledstate = 0;
+  private ringConGyroBiasDps: Gyroscope = { x: 0, y: 0, z: 0 };
+  private ringConGyroBiasRps: Gyroscope = { x: 0, y: 0, z: 0 };
+  private ringConGyroCalibrationSumDps: Gyroscope = { x: 0, y: 0, z: 0 };
+  private ringConGyroCalibrationSumRps: Gyroscope = { x: 0, y: 0, z: 0 };
+  private ringConGyroCalibrationSamples = 0;
+  private ringConGyroCalibrated = false;
+  private ringConGyroCalibrationResolve: (() => void) | null = null;
 
   /**
    * Creates an instance of the JoyCon class.
@@ -352,6 +360,92 @@ class JoyCon extends EventTarget {
     */
     await connectRingCon(this.device);
     this.ringConEnabled = true;
+    this.resetRingConMotionState();
+  }
+
+  /**
+   * Recalibrates the Ring-Con external gyroscope while the controller is still.
+   * The returned promise resolves after 60 input reports have been collected.
+   */
+  async calibrateRingCon(): Promise<void> {
+    if (!this.ringConEnabled) {
+      throw new Error('Ring-Con is not initialized. Connect it first.');
+    }
+
+    this.resetRingConMotionState();
+    await new Promise<void>((resolve) => {
+      this.ringConGyroCalibrationResolve = resolve;
+    });
+  }
+
+  /**
+   * Ring-Con external IMU reports contain a large, device-specific gyro bias.
+   * Reset the filter after initialization so the reports received while the
+   * MCU is changing modes cannot poison the new Ring-Con orientation state.
+   */
+  private resetRingConMotionState(): void {
+    this.madgwick = new AHRS({ sampleInterval: 10, algorithm: 'Madgwick' });
+    this.quaternion = this.madgwick.getQuaternion();
+    this.lastValues = {
+      timestamp: null,
+      alpha: 0,
+      beta: 0,
+      gamma: 0,
+    };
+    this.ringConGyroBiasDps = { x: 0, y: 0, z: 0 };
+    this.ringConGyroBiasRps = { x: 0, y: 0, z: 0 };
+    this.ringConGyroCalibrationSumDps = { x: 0, y: 0, z: 0 };
+    this.ringConGyroCalibrationSumRps = { x: 0, y: 0, z: 0 };
+    this.ringConGyroCalibrationSamples = 0;
+    this.ringConGyroCalibrated = false;
+  }
+
+  /**
+   * Removes the stationary Ring-Con gyro bias from the parsed external IMU.
+   * The page initializes Ring-Con while it is resting on a stable surface, so
+   * this avoids depending on Joy-Con SPI calibration being exposed by WebHID.
+   */
+  private processRingConGyroCalibration(
+    gyroscopes: ReturnType<typeof PacketParser.parseGyroscopes>
+  ): void {
+    const sample = gyroscopes[0];
+    if (!sample) {
+      return;
+    }
+
+    if (!this.ringConGyroCalibrated) {
+      sample.forEach((axis, index) => {
+        const key = ['x', 'y', 'z'][index] as keyof Gyroscope;
+        this.ringConGyroCalibrationSumDps[key] += axis.dps;
+        this.ringConGyroCalibrationSumRps[key] += axis.rps;
+        axis.dps = 0;
+        axis.rps = 0;
+      });
+      this.ringConGyroCalibrationSamples += 1;
+
+      if (this.ringConGyroCalibrationSamples >= 60) {
+        (Object.keys(this.ringConGyroBiasDps) as (keyof Gyroscope)[]).forEach(
+          (key) => {
+            this.ringConGyroBiasDps[key] =
+              this.ringConGyroCalibrationSumDps[key] /
+              this.ringConGyroCalibrationSamples;
+            this.ringConGyroBiasRps[key] =
+              this.ringConGyroCalibrationSumRps[key] /
+              this.ringConGyroCalibrationSamples;
+          }
+        );
+        this.ringConGyroCalibrated = true;
+        this.ringConGyroCalibrationResolve?.();
+        this.ringConGyroCalibrationResolve = null;
+      }
+      return;
+    }
+
+    sample.forEach((axis, index) => {
+      const key = ['x', 'y', 'z'][index] as keyof Gyroscope;
+      axis.dps -= this.ringConGyroBiasDps[key];
+      axis.rps -= this.ringConGyroBiasRps[key];
+    });
   }
 
   /**
@@ -671,6 +765,9 @@ class JoyCon extends EventTarget {
             hexData,
             this.ringConEnabled
           );
+          if (this.ringConEnabled) {
+            this.processRingConGyroCalibration(gyroscopes);
+          }
           const rps = PacketParser.calculateActualGyroscope(
             gyroscopes.map((g) => g.map((v) => v.rps ?? 0))
           );

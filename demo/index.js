@@ -8,16 +8,25 @@ import {
 
 const connectButton = document.querySelector('#connect-joy-cons');
 const connectButtonRingCon = document.querySelector('#connect-ring-con');
+const calibrateButtonRingCon = document.querySelector('#calibrate-ring-con');
 const debugLeft = document.querySelector('#debug-left');
 const debugRight = document.querySelector('#debug-right');
 const showDebug = document.querySelector('#show-debug');
 const ringConStatus = document.querySelector('#ring-con-status');
 const rootStyle = document.documentElement.style;
 let rightJoyCon = null;
+let ringConCalibrating = false;
+
+const updateRingConButtons = () => {
+  const hasRightJoyCon = Boolean(rightJoyCon);
+  connectButtonRingCon.disabled = !hasRightJoyCon || ringConCalibrating;
+  calibrateButtonRingCon.disabled =
+    !hasRightJoyCon || !rightJoyCon.ringConEnabled || ringConCalibrating;
+};
 
 connectButton.addEventListener('click', connectJoyCon);
 
-connectButtonRingCon.disabled = true;
+updateRingConButtons();
 connectButtonRingCon.addEventListener('click', async () => {
   if (!rightJoyCon) {
     ringConStatus.textContent = 'Connect the right Joy-Con first.';
@@ -28,13 +37,38 @@ connectButtonRingCon.addEventListener('click', async () => {
   ringConStatus.textContent = 'Initializing Ring-Con…';
   try {
     await rightJoyCon.enableRingCon();
-    ringConStatus.textContent = 'Ring-Con connected.';
+    ringConStatus.textContent =
+      'Ring-Con connected. Keep it still, then click Calibrate Gyroscope.';
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     ringConStatus.textContent = `Ring-Con not detected: ${message}`;
     console.error('Ring-Con initialization failed:', error);
   } finally {
-    connectButtonRingCon.disabled = false;
+    updateRingConButtons();
+  }
+});
+
+calibrateButtonRingCon.addEventListener('click', async () => {
+  const joyCon = rightJoyCon;
+  if (!joyCon?.ringConEnabled) {
+    ringConStatus.textContent = 'Connect the Ring-Con first.';
+    return;
+  }
+
+  ringConCalibrating = true;
+  updateRingConButtons();
+  ringConStatus.textContent =
+    'Calibrating gyroscope… keep the Joy-Con and Ring-Con still for about 1 second.';
+  try {
+    await joyCon.calibrateRingCon();
+    ringConStatus.textContent = 'Ring-Con connected; gyroscope calibrated.';
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    ringConStatus.textContent = `Gyroscope calibration failed: ${message}`;
+    console.error('Ring-Con gyroscope calibration failed:', error);
+  } finally {
+    ringConCalibrating = false;
+    updateRingConButtons();
   }
 });
 
@@ -178,7 +212,7 @@ setInterval(async () => {
     });
 
   }
-  connectButtonRingCon.disabled = !rightJoyCon;
+  updateRingConButtons();
 }, 2000);
 
 showDebug.addEventListener('input', (e) => {

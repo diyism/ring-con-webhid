@@ -1,22 +1,22 @@
-const Et = async (t) => {
+const St = async (t) => {
   const e = ({
-    subcommand: r,
+    subcommand: a,
     expectedReport: f,
-    timeoutErrorMessage: M = "timeout."
-  }) => (w) => new Promise((b, B) => {
-    const U = setTimeout(() => {
-      w.removeEventListener("inputreport", P), B(new Error(M));
-    }, 5e3), P = (x) => {
+    timeoutErrorMessage: w = "timeout."
+  }) => (y) => new Promise((b, L) => {
+    const G = setTimeout(() => {
+      y.removeEventListener("inputreport", D), L(new Error(w));
+    }, 5e3), D = (x) => {
       const S = x;
       if (S.reportId !== 33)
         return;
-      const k = new Uint8Array(S.data.buffer);
-      for (const [_, I] of Object.entries(f))
-        if (k[Number(_) - 1] !== I)
+      const A = new Uint8Array(S.data.buffer);
+      for (const [q, R] of Object.entries(f))
+        if (A[Number(q) - 1] !== R)
           return;
-      w.removeEventListener("inputreport", P), clearTimeout(U), setTimeout(b, 50);
+      y.removeEventListener("inputreport", D), clearTimeout(G), setTimeout(b, 50);
     };
-    w.addEventListener("inputreport", P), (async () => await w.sendReport(
+    y.addEventListener("inputreport", D), (async () => await y.sendReport(
       1,
       new Uint8Array([
         0,
@@ -28,7 +28,7 @@ const Et = async (t) => {
         0,
         0,
         0,
-        ...r
+        ...a
       ])
     ))();
   }), n = e({
@@ -42,7 +42,7 @@ const Et = async (t) => {
       13: 128,
       14: 34
     }
-  }), a = e({
+  }), r = e({
     subcommand: [
       33,
       33,
@@ -87,7 +87,7 @@ const Et = async (t) => {
     expectedReport: {
       14: 33
     }
-  }), p = e({
+  }), d = e({
     subcommand: [89],
     expectedReport: {
       14: 89,
@@ -97,7 +97,7 @@ const Et = async (t) => {
       16: 32
     },
     timeoutErrorMessage: "ring-con not found."
-  }), s = e({
+  }), i = e({
     // Ring-Con firmware requires the MaybeRingcon IMU mode before the
     // external-device format and polling commands take effect.
     subcommand: [64, 3],
@@ -154,171 +154,171 @@ const Et = async (t) => {
       14: 90
     }
   });
-  await n(t), await o(t), await a(t), await p(t), await s(t), await u(t), await l(t);
+  await n(t), await o(t), await r(t), await d(t), await i(t), await u(t), await l(t);
 };
-function St(t) {
+function Et(t) {
   return t && t.__esModule && Object.prototype.hasOwnProperty.call(t, "default") ? t.default : t;
 }
-var ht, qt;
-function At() {
-  return qt || (qt = 1, ht = function(e, n) {
+var pt, gt;
+function xt() {
+  return gt || (gt = 1, pt = function(e, n) {
     n = n || {};
-    const o = n.kp || 1, a = n.ki || 0;
-    let s = 1 / (1e3 / e), u = n.doInitialisation !== !0, l = 2 * o;
-    const r = 2 * a;
-    let f = 1, M = 0, w = 0, b = 0, B = 0, U = 0, P = 0;
-    function x(i, c, d, R, h, q) {
-      let v, m, y, D, F, j, C;
-      R !== 0 && h !== 0 && q !== 0 && (v = (R * R + h * h + q * q) ** -0.5, R *= v, h *= v, q *= v, m = M * b - f * w, y = f * M + w * b, D = f * f - 0.5 + b * b, F = h * D - q * y, j = q * m - R * D, C = R * y - h * m, r > 0 ? (B += r * F * s, U += r * j * s, P += r * C * s, i += B, c += U, d += P) : (B = 0, U = 0, P = 0), i += l * F, c += l * j, d += l * C), i *= 0.5 * s, c *= 0.5 * s, d *= 0.5 * s;
-      const L = f, N = M, H = w;
-      f += -N * i - H * c - b * d, M += L * i + H * d - b * c, w += L * c - N * d + b * i, b += L * d + N * c - H * i, v = (f * f + M * M + w * w + b * b) ** -0.5, f *= v, M *= v, w *= v, b *= v;
+    const o = n.kp || 1, r = n.ki || 0;
+    let i = 1 / (1e3 / e), u = n.doInitialisation !== !0, l = 2 * o;
+    const a = 2 * r;
+    let f = 1, w = 0, y = 0, b = 0, L = 0, G = 0, D = 0;
+    function x(s, c, h, C, p, g) {
+      let m, v, M, N, k, O, B;
+      C !== 0 && p !== 0 && g !== 0 && (m = (C * C + p * p + g * g) ** -0.5, C *= m, p *= m, g *= m, v = w * b - f * y, M = f * w + y * b, N = f * f - 0.5 + b * b, k = p * N - g * M, O = g * v - C * N, B = C * M - p * v, a > 0 ? (L += a * k * i, G += a * O * i, D += a * B * i, s += L, c += G, h += D) : (L = 0, G = 0, D = 0), s += l * k, c += l * O, h += l * B), s *= 0.5 * i, c *= 0.5 * i, h *= 0.5 * i;
+      const F = f, U = w, P = y;
+      f += -U * s - P * c - b * h, w += F * s + P * h - b * c, y += F * c - U * h + b * s, b += F * h + U * c - P * s, m = (f * f + w * w + y * y + b * b) ** -0.5, f *= m, w *= m, y *= m, b *= m;
     }
-    function S(i, c, d, R, h, q) {
+    function S(s, c, h, C, p, g) {
       return {
-        x: c * q - d * h,
-        y: d * R - i * q,
-        z: i * h - c * R
+        x: c * g - h * p,
+        y: h * C - s * g,
+        z: s * p - c * C
       };
     }
-    function k(i, c, d, R, h, q) {
-      const v = -Math.atan2(i, Math.sqrt(c * c + d * d)), m = S(i, c, d, 1, 0, 0), y = S(1, 0, 0, m.x, m.y, m.z), D = Math.atan2(y.y, y.z), F = Math.cos(D), j = Math.sin(v), C = Math.sin(D), L = h * F - q * C, N = R * Math.cos(v) + h * C * j + q * F * j;
+    function A(s, c, h, C, p, g) {
+      const m = -Math.atan2(s, Math.sqrt(c * c + h * h)), v = S(s, c, h, 1, 0, 0), M = S(1, 0, 0, v.x, v.y, v.z), N = Math.atan2(M.y, M.z), k = Math.cos(N), O = Math.sin(m), B = Math.sin(N), F = p * k - g * B, U = C * Math.cos(m) + p * B * O + g * k * O;
       return {
-        heading: -Math.atan2(L, N),
-        pitch: v,
-        roll: D
+        heading: -Math.atan2(F, U),
+        pitch: m,
+        roll: N
       };
     }
-    function _(i) {
-      const c = Math.cos(i.heading * 0.5), d = Math.sin(i.heading * 0.5), R = Math.cos(i.pitch * 0.5), h = Math.sin(i.pitch * 0.5), q = Math.cos(i.roll * 0.5), v = Math.sin(i.roll * 0.5);
+    function q(s) {
+      const c = Math.cos(s.heading * 0.5), h = Math.sin(s.heading * 0.5), C = Math.cos(s.pitch * 0.5), p = Math.sin(s.pitch * 0.5), g = Math.cos(s.roll * 0.5), m = Math.sin(s.roll * 0.5);
       return {
-        w: q * R * c + v * h * d,
-        x: v * R * c - q * h * d,
-        y: q * h * c + v * R * d,
-        z: q * R * d - v * h * c
+        w: g * C * c + m * p * h,
+        x: m * C * c - g * p * h,
+        y: g * p * c + m * C * h,
+        z: g * C * h - m * p * c
       };
     }
-    function I(i, c, d, R, h, q) {
-      const v = k(i, c, d, R, h, q), m = _(v), y = (m.w * m.w + m.x * m.x + m.y * m.y + m.z * m.z) ** -0.5;
-      f = m.w * y, M = m.x * y, w = m.y * y, b = m.z * y, u = !0;
+    function R(s, c, h, C, p, g) {
+      const m = A(s, c, h, C, p, g), v = q(m), M = (v.w * v.w + v.x * v.x + v.y * v.y + v.z * v.z) ** -0.5;
+      f = v.w * M, w = v.x * M, y = v.y * M, b = v.z * M, u = !0;
     }
-    function A(i, c, d, R, h, q, v, m, y, D) {
-      s = D || s, u || I(R, h, q, v, m, y);
-      let F, j, C, L, N, H, V, T, $, g, E, W, at, it, X, Y, lt, Z, z, ct, G, K, tt, Q;
-      if (v === void 0 || m === void 0 || y === void 0 || v === 0 && m === 0 && y === 0) {
-        x(i, c, d, R, h, q);
+    function E(s, c, h, C, p, g, m, v, M, N) {
+      i = N || i, u || R(C, p, g, m, v, M);
+      let k, O, B, F, U, P, K, J, T, I, _, W, at, st, X, Y, lt, Z, z, rt, $, V, tt, Q;
+      if (m === void 0 || v === void 0 || M === void 0 || m === 0 && v === 0 && M === 0) {
+        x(s, c, h, C, p, g);
         return;
       }
-      R !== 0 && h !== 0 && q !== 0 && (F = (R * R + h * h + q * q) ** -0.5, R *= F, h *= F, q *= F, F = (v * v + m * m + y * y) ** -0.5, v *= F, m *= F, y *= F, j = f * f, C = f * M, L = f * w, N = f * b, H = M * M, V = M * w, T = M * b, $ = w * w, g = w * b, E = b * b, W = 2 * (v * (0.5 - $ - E) + m * (V - N) + y * (T + L)), at = 2 * (v * (V + N) + m * (0.5 - H - E) + y * (g - C)), it = Math.sqrt(W * W + at * at), X = 2 * (v * (T - L) + m * (g + C) + y * (0.5 - H - $)), Y = T - L, lt = C + g, Z = j - 0.5 + E, z = it * (0.5 - $ - E) + X * (T - L), ct = it * (V - N) + X * (C + g), G = it * (L + T) + X * (0.5 - H - $), K = h * Z - q * lt + (m * G - y * ct), tt = q * Y - R * Z + (y * z - v * G), Q = R * lt - h * Y + (v * ct - m * z), r > 0 ? (B += r * K * s, U += r * tt * s, P += r * Q * s, i += B, c += U, d += P) : (B = 0, U = 0, P = 0), i += l * K, c += l * tt, d += l * Q), i *= 0.5 * s, c *= 0.5 * s, d *= 0.5 * s;
-      const et = f, J = M, O = w;
-      f += -J * i - O * c - b * d, M += et * i + O * d - b * c, w += et * c - J * d + b * i, b += et * d + J * c - O * i, F = (f * f + M * M + w * w + b * b) ** -0.5, f *= F, M *= F, w *= F, b *= F;
+      C !== 0 && p !== 0 && g !== 0 && (k = (C * C + p * p + g * g) ** -0.5, C *= k, p *= k, g *= k, k = (m * m + v * v + M * M) ** -0.5, m *= k, v *= k, M *= k, O = f * f, B = f * w, F = f * y, U = f * b, P = w * w, K = w * y, J = w * b, T = y * y, I = y * b, _ = b * b, W = 2 * (m * (0.5 - T - _) + v * (K - U) + M * (J + F)), at = 2 * (m * (K + U) + v * (0.5 - P - _) + M * (I - B)), st = Math.sqrt(W * W + at * at), X = 2 * (m * (J - F) + v * (I + B) + M * (0.5 - P - T)), Y = J - F, lt = B + I, Z = O - 0.5 + _, z = st * (0.5 - T - _) + X * (J - F), rt = st * (K - U) + X * (B + I), $ = st * (F + J) + X * (0.5 - P - T), V = p * Z - g * lt + (v * $ - M * rt), tt = g * Y - C * Z + (M * z - m * $), Q = C * lt - p * Y + (m * rt - v * z), a > 0 ? (L += a * V * i, G += a * tt * i, D += a * Q * i, s += L, c += G, h += D) : (L = 0, G = 0, D = 0), s += l * V, c += l * tt, h += l * Q), s *= 0.5 * i, c *= 0.5 * i, h *= 0.5 * i;
+      const et = f, j = w, H = y;
+      f += -j * s - H * c - b * h, w += et * s + H * h - b * c, y += et * c - j * h + b * s, b += et * h + j * c - H * s, k = (f * f + w * w + y * y + b * b) ** -0.5, f *= k, w *= k, y *= k, b *= k;
     }
     return {
-      update: A,
-      init: I,
+      update: E,
+      init: R,
       getQuaternion() {
         return {
           w: f,
-          x: M,
-          y: w,
+          x: w,
+          y,
           z: b
         };
       }
     };
-  }), ht;
+  }), pt;
 }
-var ft, Mt;
-function xt() {
-  return Mt || (Mt = 1, ft = function(e, n) {
+var ft, wt;
+function At() {
+  return wt || (wt = 1, ft = function(e, n) {
     n = n || {};
     const o = 1e3 / e;
-    let a = n.beta || 0.4, p = n.doInitialisation !== !0, s = 1, u = 0, l = 0, r = 0, f = 1 / o;
-    function M(x, S, k, _, I, A) {
-      let i, c, d, R, h, q, v, m, y, D, F, j, C, L, N, H, V, T, $, g, E, W;
-      q = 0.5 * (-u * x - l * S - r * k), v = 0.5 * (s * x + l * k - r * S), m = 0.5 * (s * S - u * k + r * x), y = 0.5 * (s * k + u * S - l * x), _ === 0 && I === 0 && A === 0 || (i = (_ * _ + I * I + A * A) ** -0.5, _ *= i, I *= i, A *= i, D = 2 * s, F = 2 * u, j = 2 * l, C = 2 * r, L = 4 * s, N = 4 * u, H = 4 * l, V = 8 * u, T = 8 * l, $ = s * s, g = u * u, E = l * l, W = r * r, c = L * E + j * _ + L * g - F * I, d = N * W - C * _ + 4 * $ * u - D * I - N + V * g + V * E + N * A, R = 4 * $ * l + D * _ + H * W - C * I - H + T * g + T * E + H * A, h = 4 * g * r - F * _ + 4 * E * r - j * I, i = (c * c + d * d + R * R + h * h) ** -0.5, c *= i, d *= i, R *= i, h *= i, q -= a * c, v -= a * d, m -= a * R, y -= a * h), s += q * f, u += v * f, l += m * f, r += y * f, i = (s * s + u * u + l * l + r * r) ** -0.5, s *= i, u *= i, l *= i, r *= i;
+    let r = n.beta || 0.4, d = n.doInitialisation !== !0, i = 1, u = 0, l = 0, a = 0, f = 1 / o;
+    function w(x, S, A, q, R, E) {
+      let s, c, h, C, p, g, m, v, M, N, k, O, B, F, U, P, K, J, T, I, _, W;
+      g = 0.5 * (-u * x - l * S - a * A), m = 0.5 * (i * x + l * A - a * S), v = 0.5 * (i * S - u * A + a * x), M = 0.5 * (i * A + u * S - l * x), q === 0 && R === 0 && E === 0 || (s = (q * q + R * R + E * E) ** -0.5, q *= s, R *= s, E *= s, N = 2 * i, k = 2 * u, O = 2 * l, B = 2 * a, F = 4 * i, U = 4 * u, P = 4 * l, K = 8 * u, J = 8 * l, T = i * i, I = u * u, _ = l * l, W = a * a, c = F * _ + O * q + F * I - k * R, h = U * W - B * q + 4 * T * u - N * R - U + K * I + K * _ + U * E, C = 4 * T * l + N * q + P * W - B * R - P + J * I + J * _ + P * E, p = 4 * I * a - k * q + 4 * _ * a - O * R, s = (c * c + h * h + C * C + p * p) ** -0.5, c *= s, h *= s, C *= s, p *= s, g -= r * c, m -= r * h, v -= r * C, M -= r * p), i += g * f, u += m * f, l += v * f, a += M * f, s = (i * i + u * u + l * l + a * a) ** -0.5, i *= s, u *= s, l *= s, a *= s;
     }
-    function w(x, S, k, _, I, A) {
+    function y(x, S, A, q, R, E) {
       return {
-        x: S * A - k * I,
-        y: k * _ - x * A,
-        z: x * I - S * _
+        x: S * E - A * R,
+        y: A * q - x * E,
+        z: x * R - S * q
       };
     }
-    function b(x, S, k, _, I, A) {
-      const i = -Math.atan2(x, Math.sqrt(S * S + k * k)), c = w(x, S, k, 1, 0, 0), d = w(1, 0, 0, c.x, c.y, c.z), R = Math.atan2(d.y, d.z), h = Math.cos(R), q = Math.sin(i), v = Math.sin(R), m = I * h - A * v, y = _ * Math.cos(i) + I * v * q + A * h * q;
+    function b(x, S, A, q, R, E) {
+      const s = -Math.atan2(x, Math.sqrt(S * S + A * A)), c = y(x, S, A, 1, 0, 0), h = y(1, 0, 0, c.x, c.y, c.z), C = Math.atan2(h.y, h.z), p = Math.cos(C), g = Math.sin(s), m = Math.sin(C), v = R * p - E * m, M = q * Math.cos(s) + R * m * g + E * p * g;
       return {
-        heading: -Math.atan2(m, y),
-        pitch: i,
-        roll: R
+        heading: -Math.atan2(v, M),
+        pitch: s,
+        roll: C
       };
     }
-    function B(x) {
-      const S = Math.cos(x.heading * 0.5), k = Math.sin(x.heading * 0.5), _ = Math.cos(x.pitch * 0.5), I = Math.sin(x.pitch * 0.5), A = Math.cos(x.roll * 0.5), i = Math.sin(x.roll * 0.5);
+    function L(x) {
+      const S = Math.cos(x.heading * 0.5), A = Math.sin(x.heading * 0.5), q = Math.cos(x.pitch * 0.5), R = Math.sin(x.pitch * 0.5), E = Math.cos(x.roll * 0.5), s = Math.sin(x.roll * 0.5);
       return {
-        w: A * _ * S + i * I * k,
-        x: i * _ * S - A * I * k,
-        y: A * I * S + i * _ * k,
-        z: A * _ * k - i * I * S
+        w: E * q * S + s * R * A,
+        x: s * q * S - E * R * A,
+        y: E * R * S + s * q * A,
+        z: E * q * A - s * R * S
       };
     }
-    function U(x, S, k, _, I, A) {
-      const i = b(x, S, k, _, I, A), c = B(i), d = (c.w * c.w + c.x * c.x + c.y * c.y + c.z * c.z) ** -0.5;
-      s = c.w * d, u = c.x * d, l = c.y * d, r = c.z * d, p = !0;
+    function G(x, S, A, q, R, E) {
+      const s = b(x, S, A, q, R, E), c = L(s), h = (c.w * c.w + c.x * c.x + c.y * c.y + c.z * c.z) ** -0.5;
+      i = c.w * h, u = c.x * h, l = c.y * h, a = c.z * h, d = !0;
     }
-    function P(x, S, k, _, I, A, i, c, d, R) {
-      f = R || f, p || U(_, I, A, i, c, d);
-      let h, q, v, m, y, D, F, j, C, L, N, H, V, T, $, g, E, W, at, it, X, Y, lt, Z, z, ct, G, K, tt, Q, et, J, O, dt, rt;
-      if (i === void 0 || c === void 0 || d === void 0 || i === 0 && c === 0 && d === 0) {
-        M(x, S, k, _, I, A);
+    function D(x, S, A, q, R, E, s, c, h, C) {
+      f = C || f, d || G(q, R, E, s, c, h);
+      let p, g, m, v, M, N, k, O, B, F, U, P, K, J, T, I, _, W, at, st, X, Y, lt, Z, z, rt, $, V, tt, Q, et, j, H, dt, ct;
+      if (s === void 0 || c === void 0 || h === void 0 || s === 0 && c === 0 && h === 0) {
+        w(x, S, A, q, R, E);
         return;
       }
-      D = 0.5 * (-u * x - l * S - r * k), F = 0.5 * (s * x + l * k - r * S), j = 0.5 * (s * S - u * k + r * x), C = 0.5 * (s * k + u * S - l * x), _ === 0 && I === 0 && A === 0 || (h = (_ * _ + I * I + A * A) ** -0.5, _ *= h, I *= h, A *= h, h = (i * i + c * c + d * d) ** -0.5, i *= h, c *= h, d *= h, H = 2 * s * i, V = 2 * s * c, T = 2 * s * d, $ = 2 * u * i, it = 2 * s, X = 2 * u, Y = 2 * l, lt = 2 * r, Z = 2 * s * l, z = 2 * l * r, ct = s * s, G = s * u, K = s * l, tt = s * r, Q = u * u, et = u * l, J = u * r, O = l * l, dt = l * r, rt = r * r, L = i * ct - V * r + T * l + i * Q + X * c * l + X * d * r - i * O - i * rt, N = H * r + c * ct - T * u + $ * l - c * Q + c * O + Y * d * r - c * rt, g = Math.sqrt(L * L + N * N), E = -H * l + V * u + d * ct + $ * r - d * Q + Y * c * r - d * O + d * rt, W = 2 * g, at = 2 * E, q = -Y * (2 * J - Z - _) + X * (2 * G + z - I) - E * l * (g * (0.5 - O - rt) + E * (J - K) - i) + (-g * r + E * u) * (g * (et - tt) + E * (G + dt) - c) + g * l * (g * (K + J) + E * (0.5 - Q - O) - d), v = lt * (2 * J - Z - _) + it * (2 * G + z - I) - 4 * u * (1 - 2 * Q - 2 * O - A) + E * r * (g * (0.5 - O - rt) + E * (J - K) - i) + (g * l + E * s) * (g * (et - tt) + E * (G + dt) - c) + (g * r - at * u) * (g * (K + J) + E * (0.5 - Q - O) - d), m = -it * (2 * J - Z - _) + lt * (2 * G + z - I) - 4 * l * (1 - 2 * Q - 2 * O - A) + (-W * l - E * s) * (g * (0.5 - O - rt) + E * (J - K) - i) + (g * u + E * r) * (g * (et - tt) + E * (G + dt) - c) + (g * s - at * l) * (g * (K + J) + E * (0.5 - Q - O) - d), y = X * (2 * J - Z - _) + Y * (2 * G + z - I) + (-W * r + E * u) * (g * (0.5 - O - rt) + E * (J - K) - i) + (-g * s + E * l) * (g * (et - tt) + E * (G + dt) - c) + g * u * (g * (K + J) + E * (0.5 - Q - O) - d), h = (q * q + v * v + m * m + y * y) ** -0.5, q *= h, v *= h, m *= h, y *= h, D -= a * q, F -= a * v, j -= a * m, C -= a * y), s += D * f, u += F * f, l += j * f, r += C * f, h = (s * s + u * u + l * l + r * r) ** -0.5, s *= h, u *= h, l *= h, r *= h;
+      N = 0.5 * (-u * x - l * S - a * A), k = 0.5 * (i * x + l * A - a * S), O = 0.5 * (i * S - u * A + a * x), B = 0.5 * (i * A + u * S - l * x), q === 0 && R === 0 && E === 0 || (p = (q * q + R * R + E * E) ** -0.5, q *= p, R *= p, E *= p, p = (s * s + c * c + h * h) ** -0.5, s *= p, c *= p, h *= p, P = 2 * i * s, K = 2 * i * c, J = 2 * i * h, T = 2 * u * s, st = 2 * i, X = 2 * u, Y = 2 * l, lt = 2 * a, Z = 2 * i * l, z = 2 * l * a, rt = i * i, $ = i * u, V = i * l, tt = i * a, Q = u * u, et = u * l, j = u * a, H = l * l, dt = l * a, ct = a * a, F = s * rt - K * a + J * l + s * Q + X * c * l + X * h * a - s * H - s * ct, U = P * a + c * rt - J * u + T * l - c * Q + c * H + Y * h * a - c * ct, I = Math.sqrt(F * F + U * U), _ = -P * l + K * u + h * rt + T * a - h * Q + Y * c * a - h * H + h * ct, W = 2 * I, at = 2 * _, g = -Y * (2 * j - Z - q) + X * (2 * $ + z - R) - _ * l * (I * (0.5 - H - ct) + _ * (j - V) - s) + (-I * a + _ * u) * (I * (et - tt) + _ * ($ + dt) - c) + I * l * (I * (V + j) + _ * (0.5 - Q - H) - h), m = lt * (2 * j - Z - q) + st * (2 * $ + z - R) - 4 * u * (1 - 2 * Q - 2 * H - E) + _ * a * (I * (0.5 - H - ct) + _ * (j - V) - s) + (I * l + _ * i) * (I * (et - tt) + _ * ($ + dt) - c) + (I * a - at * u) * (I * (V + j) + _ * (0.5 - Q - H) - h), v = -st * (2 * j - Z - q) + lt * (2 * $ + z - R) - 4 * l * (1 - 2 * Q - 2 * H - E) + (-W * l - _ * i) * (I * (0.5 - H - ct) + _ * (j - V) - s) + (I * u + _ * a) * (I * (et - tt) + _ * ($ + dt) - c) + (I * i - at * l) * (I * (V + j) + _ * (0.5 - Q - H) - h), M = X * (2 * j - Z - q) + Y * (2 * $ + z - R) + (-W * a + _ * u) * (I * (0.5 - H - ct) + _ * (j - V) - s) + (-I * i + _ * l) * (I * (et - tt) + _ * ($ + dt) - c) + I * u * (I * (V + j) + _ * (0.5 - Q - H) - h), p = (g * g + m * m + v * v + M * M) ** -0.5, g *= p, m *= p, v *= p, M *= p, N -= r * g, k -= r * m, O -= r * v, B -= r * M), i += N * f, u += k * f, l += O * f, a += B * f, p = (i * i + u * u + l * l + a * a) ** -0.5, i *= p, u *= p, l *= p, a *= p;
     }
     return {
-      update: P,
-      init: U,
+      update: D,
+      init: G,
       getQuaternion() {
         return {
-          w: s,
+          w: i,
           x: u,
           y: l,
-          z: r
+          z: a
         };
       }
     };
   }), ft;
 }
-var vt, It;
+var mt, Rt;
 function kt() {
-  if (It) return vt;
-  It = 1;
+  if (Rt) return mt;
+  Rt = 1;
   const t = 180 / Math.PI;
   function e(n) {
     n = n || {};
-    const o = n.sampleInterval || 20, a = n.algorithm || "Madgwick";
-    let p;
-    if (a === "Mahony")
-      p = At();
-    else if (a === "Madgwick")
-      p = xt();
+    const o = n.sampleInterval || 20, r = n.algorithm || "Madgwick";
+    let d;
+    if (r === "Mahony")
+      d = xt();
+    else if (r === "Madgwick")
+      d = At();
     else
-      throw new Error(`AHRS(): Algorithm not valid: ${a}`);
-    const s = p(o, n), u = this;
-    Object.keys(s).forEach((l) => u[l] = s[l]);
+      throw new Error(`AHRS(): Algorithm not valid: ${r}`);
+    const i = d(o, n), u = this;
+    Object.keys(i).forEach((l) => u[l] = i[l]);
   }
   return e.prototype.toVector = function() {
-    const o = this.getQuaternion(), a = 2 * Math.acos(o.w), p = Math.sin(a / 2);
+    const o = this.getQuaternion(), r = 2 * Math.acos(o.w), d = Math.sin(r / 2);
     return {
-      angle: a,
-      x: o.x / p,
-      y: o.y / p,
-      z: o.z / p
+      angle: r,
+      x: o.x / d,
+      y: o.y / d,
+      z: o.z / d
     };
   }, e.prototype.getEulerAngles = function() {
-    const o = this.getQuaternion(), a = o.w * o.w, p = o.x * o.x, s = o.y * o.y, u = o.z * o.z;
+    const o = this.getQuaternion(), r = o.w * o.w, d = o.x * o.x, i = o.y * o.y, u = o.z * o.z;
     return {
-      heading: Math.atan2(2 * (o.x * o.y + o.z * o.w), p - s - u + a),
+      heading: Math.atan2(2 * (o.x * o.y + o.z * o.w), d - i - u + r),
       pitch: -Math.asin(2 * (o.x * o.z - o.y * o.w)),
-      roll: Math.atan2(2 * (o.y * o.z + o.x * o.w), -p - s + u + a)
+      roll: Math.atan2(2 * (o.y * o.z + o.x * o.w), -d - i + u + r)
     };
   }, e.prototype.getEulerAnglesDegrees = function() {
     const o = this.getEulerAngles();
@@ -327,23 +327,23 @@ function kt() {
       pitch: o.pitch * t,
       roll: o.roll * t
     };
-  }, vt = e, vt;
+  }, mt = e, mt;
 }
-var Ft = kt();
-const Ct = /* @__PURE__ */ St(Ft);
-function Lt(t, e) {
+var Bt = kt();
+const Ct = /* @__PURE__ */ Et(Bt);
+function Ft(t, e) {
   let n;
   for (const o of t) {
-    const a = e(o);
-    a !== void 0 && (n = n === void 0 ? a : n + a);
+    const r = e(o);
+    r !== void 0 && (n = n === void 0 ? r : n + r);
   }
   return n;
 }
 function ut(t, e = (n) => n) {
-  const n = t == null ? 0 : t.length, o = Lt(t, e);
+  const n = t == null ? 0 : t.length, o = Ft(t, e);
   return n ? o / n : Number.NaN;
 }
-function Bt(t) {
+function Lt(t) {
   let e;
   switch (t[0]) {
     case "8":
@@ -366,32 +366,32 @@ function Bt(t) {
   }
   return e;
 }
-const Ut = {
+const Gt = {
   // biome-ignore lint/complexity/useSimpleNumberKeys:
   1: "Left Joy-Con",
   // biome-ignore lint/complexity/useSimpleNumberKeys:
   2: "Right Joy-Con",
   // biome-ignore lint/complexity/useSimpleNumberKeys:
   3: "Pro Controller"
-}, pt = 0.75, Nt = 0.0125, Rt = Math.PI / 2;
-function Pt(t, e, n, o) {
-  const a = Date.now(), p = t.timestamp ? (a - t.timestamp) / 1e3 : 0;
-  t.timestamp = a;
-  const s = Math.sqrt(
+}, ht = 0.75, Ut = 0.0125, qt = Math.PI / 2;
+function Dt(t, e, n, o) {
+  const r = Date.now(), d = t.timestamp ? (r - t.timestamp) / 1e3 : 0;
+  t.timestamp = r;
+  const i = Math.sqrt(
     n.x ** 2 + n.y ** 2 + n.z ** 2
   );
-  return t.alpha = (1 - Nt) * (t.alpha + e.z * p), s !== 0 && (t.beta = pt * (t.beta + e.x * p) + (1 - pt) * (n.x * Rt / s), t.gamma = pt * (t.gamma + e.y * p) + (1 - pt) * (n.y * -Rt / s)), {
+  return t.alpha = (1 - Ut) * (t.alpha + e.z * d), i !== 0 && (t.beta = ht * (t.beta + e.x * d) + (1 - ht) * (n.x * qt / i), t.gamma = ht * (t.gamma + e.y * d) + (1 - ht) * (n.y * -qt / i)), {
     alpha: o === 8198 ? (-1 * (t.alpha * 180) / Math.PI * 430 % 90).toFixed(6) : (t.alpha * 180 / Math.PI * 430 % 360).toFixed(6),
     beta: (-1 * (t.beta * 180) / Math.PI).toFixed(6),
     gamma: o === 8198 ? (-1 * (t.gamma * 180) / Math.PI).toFixed(6) : (t.gamma * 180 / Math.PI).toFixed(6)
   };
 }
-function Dt(t) {
-  const e = 180 / Math.PI, n = t.w * t.w, o = t.x * t.x, a = t.y * t.y, p = t.z * t.z;
+function Nt(t) {
+  const e = 180 / Math.PI, n = t.w * t.w, o = t.x * t.x, r = t.y * t.y, d = t.z * t.z;
   return {
-    alpha: (e * Math.atan2(2 * (t.x * t.y + t.z * t.w), o - a - p + n)).toFixed(6),
+    alpha: (e * Math.atan2(2 * (t.x * t.y + t.z * t.w), o - r - d + n)).toFixed(6),
     beta: (e * -Math.asin(2 * (t.x * t.z - t.y * t.w))).toFixed(6),
-    gamma: (e * Math.atan2(2 * (t.y * t.z + t.x * t.w), -o - a + p + n)).toFixed(6)
+    gamma: (e * Math.atan2(2 * (t.y * t.z + t.x * t.w), -o - r + d + n)).toFixed(6)
   };
 }
 function nt(t) {
@@ -402,14 +402,14 @@ function ot(t) {
   const e = new DataView(t.buffer);
   return Number.parseFloat((0.06103 * e.getInt16(0, !0)).toFixed(6));
 }
-function st(t) {
+function it(t) {
   const e = new DataView(t.buffer);
   return Number.parseFloat((1694e-7 * e.getInt16(0, !0)).toFixed(6));
 }
-function Ht(t) {
-  const e = t.slice(15, 26), n = e.slice(0, 1)[0], o = e.slice(1, 2)[0], a = e.slice(2, 3), p = e.slice(4, 10), s = [];
-  for (const r of p)
-    s.push(r.toString(16));
+function Pt(t) {
+  const e = t.slice(15, 26), n = e.slice(0, 1)[0], o = e.slice(1, 2)[0], r = e.slice(2, 3), d = e.slice(4, 10), i = [];
+  for (const a of d)
+    i.push(a.toString(16));
   const u = e.slice(11, 12);
   return {
     _raw: e.slice(0, 12),
@@ -418,34 +418,34 @@ function Ht(t) {
       major: n,
       minor: o
     },
-    type: Ut[a[0]],
-    macAddress: s.join(":"),
+    type: Gt[r[0]],
+    macAddress: i.join(":"),
     spiColorInUse: u[0] === 1
   };
 }
-function Ot(t, e) {
+function Ht(t, e) {
   return {
     _raw: t.slice(0, 1),
     // index 0
     _hex: e.slice(0, 1)
   };
 }
-function jt(t, e) {
+function Ot(t, e) {
   return {
     _raw: t.slice(1, 2),
     // index 1
     _hex: e.slice(1, 2)
   };
 }
-function Jt(t, e) {
+function jt(t, e) {
   return {
     _raw: t.slice(2, 3),
     // high nibble
     _hex: e.slice(2, 3),
-    level: Bt(e.slice(2, 3))
+    level: Lt(e.slice(2, 3))
   };
 }
-function Tt(t, e) {
+function Jt(t, e) {
   return {
     _raw: t.slice(2, 3),
     // low nibble
@@ -459,7 +459,7 @@ function Qt(t, e) {
     _hex: e.slice(1, 3)
   };
 }
-function $t(t, e) {
+function Tt(t, e) {
   return {
     _raw: t.slice(3, 6),
     // index 3,4,5
@@ -491,14 +491,14 @@ function $t(t, e) {
     chargingGrip: !!(128 & t[4])
   };
 }
-function Gt(t, e) {
+function $t(t, e) {
   return {
     _raw: t.slice(3, 4),
     // index 3
     _hex: e.slice(3, 4)
   };
 }
-function Kt(t, e) {
+function Vt(t, e) {
   let n = t[6] | (t[7] & 15) << 8;
   n = (n / 1995 - 1) * 2;
   let o = (t[7] >> 4 | t[8] << 4) * -1;
@@ -510,7 +510,7 @@ function Kt(t, e) {
     vertical: o.toFixed(1)
   };
 }
-function Vt(t, e) {
+function Kt(t, e) {
   let n = t[9] | (t[10] & 15) << 8;
   n = (n / 1995 - 1) * 2;
   let o = (t[10] >> 4 | t[11] << 4) * -1;
@@ -630,21 +630,21 @@ function ee(t, e, n = !1) {
         // index 19,20
         _hex: e.slice(19, 21),
         dps: ot(t.slice(19, 21)),
-        rps: st(t.slice(19, 21))
+        rps: it(t.slice(19, 21))
       },
       {
         _raw: t.slice(21, 23),
         // index 21,22
         _hex: e.slice(21, 23),
         dps: ot(t.slice(21, 23)),
-        rps: st(t.slice(21, 23))
+        rps: it(t.slice(21, 23))
       },
       {
         _raw: t.slice(23, 25),
         // index 23,24
         _hex: e.slice(23, 25),
         dps: ot(t.slice(23, 25)),
-        rps: st(t.slice(23, 25))
+        rps: it(t.slice(23, 25))
       }
     ],
     [
@@ -653,21 +653,21 @@ function ee(t, e, n = !1) {
         // index 31,32
         _hex: e.slice(31, 33),
         dps: ot(t.slice(31, 33)),
-        rps: st(t.slice(31, 33))
+        rps: it(t.slice(31, 33))
       },
       {
         _raw: t.slice(33, 35),
         // index 33,34
         _hex: e.slice(33, 35),
         dps: ot(t.slice(33, 35)),
-        rps: st(t.slice(33, 35))
+        rps: it(t.slice(33, 35))
       },
       {
         _raw: t.slice(35, 37),
         // index 35,36
         _hex: e.slice(35, 37),
         dps: ot(t.slice(35, 37)),
-        rps: st(t.slice(35, 37))
+        rps: it(t.slice(35, 37))
       }
     ],
     [
@@ -676,21 +676,21 @@ function ee(t, e, n = !1) {
         // index 43,44
         _hex: e.slice(43, 45),
         dps: ot(t.slice(43, 45)),
-        rps: st(t.slice(43, 45))
+        rps: it(t.slice(43, 45))
       },
       {
         _raw: t.slice(45, 47),
         // index 45,46
         _hex: e.slice(45, 47),
         dps: ot(t.slice(45, 47)),
-        rps: st(t.slice(45, 47))
+        rps: it(t.slice(45, 47))
       },
       {
         _raw: t.slice(47, 49),
         // index 47,48
         _hex: e.slice(47, 49),
         dps: ot(t.slice(47, 49)),
-        rps: st(t.slice(47, 49))
+        rps: it(t.slice(47, 49))
       }
     ]
   ];
@@ -710,7 +710,7 @@ function ne(t) {
     )
   };
 }
-function _t(t) {
+function Mt(t) {
   const e = 5e-3 * t.length, n = [
     ut(t.map((o) => o[0])),
     ut(t.map((o) => o[1])),
@@ -731,7 +731,7 @@ function oe(t, e) {
     strain: new DataView(t.buffer, 39, 2).getInt16(0, !0)
   };
 }
-function se(t, e) {
+function ie(t, e) {
   const n = new (Object.getPrototypeOf(t)).constructor(
     t.length + e.length
   );
@@ -745,6 +745,13 @@ class bt extends EventTarget {
   device;
   lastValues;
   ledstate = 0;
+  ringConGyroBiasDps = { x: 0, y: 0, z: 0 };
+  ringConGyroBiasRps = { x: 0, y: 0, z: 0 };
+  ringConGyroCalibrationSumDps = { x: 0, y: 0, z: 0 };
+  ringConGyroCalibrationSumRps = { x: 0, y: 0, z: 0 };
+  ringConGyroCalibrationSamples = 0;
+  ringConGyroCalibrated = !1;
+  ringConGyroCalibrationResolve = null;
   /**
    * Creates an instance of the JoyCon class.
    *
@@ -805,16 +812,16 @@ class bt extends EventTarget {
       0,
       0,
       ...[2]
-    ], a = new Promise((p) => {
-      const s = ({ detail: u }) => {
-        const { _raw: l, _hex: r, ...f } = u;
-        p(f);
+    ], r = new Promise((d) => {
+      const i = ({ detail: u }) => {
+        const { _raw: l, _hex: a, ...f } = u;
+        d(f);
       };
-      this.addEventListener("deviceinfo", s, {
+      this.addEventListener("deviceinfo", i, {
         once: !0
       });
     });
-    return await this.device.sendReport(1, new Uint8Array(o)), a;
+    return await this.device.sendReport(1, new Uint8Array(o)), r;
   }
   /**
    * Requests the current battery level from the Joy-Con device.
@@ -837,16 +844,16 @@ class bt extends EventTarget {
       0,
       0,
       ...[80]
-    ], a = new Promise((p) => {
-      const s = ({ detail: u }) => {
-        const { _raw: l, _hex: r, ...f } = u;
-        p(f);
+    ], r = new Promise((d) => {
+      const i = ({ detail: u }) => {
+        const { _raw: l, _hex: a, ...f } = u;
+        d(f);
       };
-      this.addEventListener("batterylevel", s, {
+      this.addEventListener("batterylevel", i, {
         once: !0
       });
     });
-    return await this.device.sendReport(1, new Uint8Array(o)), a;
+    return await this.device.sendReport(1, new Uint8Array(o)), r;
   }
   /**
    * Enables the Simple HID mode on the connected Joy-Con device.
@@ -1001,7 +1008,56 @@ class bt extends EventTarget {
    * @seeAlso https://github.com/mascii/demo-of-ring-con-with-web-hid
    */
   async enableRingCon() {
-    await Et(this.device), this.ringConEnabled = !0;
+    await St(this.device), this.ringConEnabled = !0, this.resetRingConMotionState();
+  }
+  /**
+   * Recalibrates the Ring-Con external gyroscope while the controller is still.
+   * The returned promise resolves after 60 input reports have been collected.
+   */
+  async calibrateRingCon() {
+    if (!this.ringConEnabled)
+      throw new Error("Ring-Con is not initialized. Connect it first.");
+    this.resetRingConMotionState(), await new Promise((e) => {
+      this.ringConGyroCalibrationResolve = e;
+    });
+  }
+  /**
+   * Ring-Con external IMU reports contain a large, device-specific gyro bias.
+   * Reset the filter after initialization so the reports received while the
+   * MCU is changing modes cannot poison the new Ring-Con orientation state.
+   */
+  resetRingConMotionState() {
+    this.madgwick = new Ct({ sampleInterval: 10, algorithm: "Madgwick" }), this.quaternion = this.madgwick.getQuaternion(), this.lastValues = {
+      timestamp: null,
+      alpha: 0,
+      beta: 0,
+      gamma: 0
+    }, this.ringConGyroBiasDps = { x: 0, y: 0, z: 0 }, this.ringConGyroBiasRps = { x: 0, y: 0, z: 0 }, this.ringConGyroCalibrationSumDps = { x: 0, y: 0, z: 0 }, this.ringConGyroCalibrationSumRps = { x: 0, y: 0, z: 0 }, this.ringConGyroCalibrationSamples = 0, this.ringConGyroCalibrated = !1;
+  }
+  /**
+   * Removes the stationary Ring-Con gyro bias from the parsed external IMU.
+   * The page initializes Ring-Con while it is resting on a stable surface, so
+   * this avoids depending on Joy-Con SPI calibration being exposed by WebHID.
+   */
+  processRingConGyroCalibration(e) {
+    const n = e[0];
+    if (n) {
+      if (!this.ringConGyroCalibrated) {
+        n.forEach((o, r) => {
+          const d = ["x", "y", "z"][r];
+          this.ringConGyroCalibrationSumDps[d] += o.dps, this.ringConGyroCalibrationSumRps[d] += o.rps, o.dps = 0, o.rps = 0;
+        }), this.ringConGyroCalibrationSamples += 1, this.ringConGyroCalibrationSamples >= 60 && (Object.keys(this.ringConGyroBiasDps).forEach(
+          (o) => {
+            this.ringConGyroBiasDps[o] = this.ringConGyroCalibrationSumDps[o] / this.ringConGyroCalibrationSamples, this.ringConGyroBiasRps[o] = this.ringConGyroCalibrationSumRps[o] / this.ringConGyroCalibrationSamples;
+          }
+        ), this.ringConGyroCalibrated = !0, this.ringConGyroCalibrationResolve?.(), this.ringConGyroCalibrationResolve = null);
+        return;
+      }
+      n.forEach((o, r) => {
+        const d = ["x", "y", "z"][r];
+        o.dps -= this.ringConGyroBiasDps[d], o.rps -= this.ringConGyroBiasRps[d];
+      });
+    }
   }
   /**
    * Enables the USB HID joystick report mode for the connected device.
@@ -1031,19 +1087,19 @@ class bt extends EventTarget {
    * The rumble effect is applied to both left and right motors of the Joy-Con.
    */
   async rumble(e, n, o) {
-    const a = (b, B, U) => Math.min(Math.max(b, B), U), s = new Uint8Array(9);
-    s[0] = 0;
-    let u = a(e, 40.875885, 626.286133), l = a(n, 81.75177, 1252.572266);
+    const r = (b, L, G) => Math.min(Math.max(b, L), G), i = new Uint8Array(9);
+    i[0] = 0;
+    let u = r(e, 40.875885, 626.286133), l = r(n, 81.75177, 1252.572266);
     l = (Math.round(32 * Math.log2(l * 0.1)) - 96) * 4, u = Math.round(32 * Math.log2(u * 0.1)) - 64;
-    const r = a(o, 0, 1);
+    const a = r(o, 0, 1);
     let f;
-    r === 0 ? f = 0 : r < 0.117 ? f = (Math.log2(r * 1e3) * 32 - 96) / (5 - r ** 2) - 1 : r < 0.23 ? f = Math.log2(r * 1e3) * 32 - 96 - 92 : f = (Math.log2(r * 1e3) * 32 - 96) * 2 - 246;
-    let M = Math.round(f) * 0.5;
-    const w = M % 2;
-    w > 0 && --M, M = M >> 1, M += 64, w > 0 && (M |= 32768), s[1] = l & 255, s[2] = f + (l >>> 8 & 255), s[3] = u + (M >>> 8 & 255), s[4] += M & 255;
+    a === 0 ? f = 0 : a < 0.117 ? f = (Math.log2(a * 1e3) * 32 - 96) / (5 - a ** 2) - 1 : a < 0.23 ? f = Math.log2(a * 1e3) * 32 - 96 - 92 : f = (Math.log2(a * 1e3) * 32 - 96) * 2 - 246;
+    let w = Math.round(f) * 0.5;
+    const y = w % 2;
+    y > 0 && --w, w = w >> 1, w += 64, y > 0 && (w |= 32768), i[1] = l & 255, i[2] = f + (l >>> 8 & 255), i[3] = u + (w >>> 8 & 255), i[4] += w & 255;
     for (let b = 0; b < 4; b++)
-      s[5 + b] = s[1 + b];
-    await this.device.sendReport(16, new Uint8Array(s));
+      i[5 + b] = i[1 + b];
+    await this.device.sendReport(16, new Uint8Array(i));
   }
   /**
    * Sets the blinking pattern for the Home LED on the Right Joy-Con device.
@@ -1056,15 +1112,15 @@ class bt extends EventTarget {
    * @param cycleData: Array of {@link HomeLEDpatterns}. The maximum count of the array is 15.
    */
   /* Inspired by the JoyConSwift library */
-  async setHomeLEDPattern(e, n, o, a) {
-    const p = (B, U, P) => Math.min(Math.max(B, U), P), u = Math.min(a.length, 15), l = u << 4 | p(e, 0, 15), r = p(o, 0, 15) << 4 | p(n, 0, 15), f = [l, r], M = {
+  async setHomeLEDPattern(e, n, o, r) {
+    const d = (L, G, D) => Math.min(Math.max(L, G), D), u = Math.min(r.length, 15), l = u << 4 | d(e, 0, 15), a = d(o, 0, 15) << 4 | d(n, 0, 15), f = [l, a], w = {
       intensity: 15,
       fadeDuration: 0,
       duration: 0
-    }, w = a.slice(0, u).concat(Array(16 - u).fill(M));
-    for (let B = 0; B < 8; B++) {
-      const U = w[B * 2], P = w[B * 2 + 1], x = p(U.intensity, 0, 15), S = p(U.fadeDuration, 0, 15), k = p(U.duration, 0, 15), _ = p(P.intensity, 0, 15), I = p(P.fadeDuration, 0, 15), A = p(P.duration, 0, 15);
-      f.push(x << 4 | _), f.push(S << 4 | k), f.push(I << 4 | A);
+    }, y = r.slice(0, u).concat(Array(16 - u).fill(w));
+    for (let L = 0; L < 8; L++) {
+      const G = y[L * 2], D = y[L * 2 + 1], x = d(G.intensity, 0, 15), S = d(G.fadeDuration, 0, 15), A = d(G.duration, 0, 15), q = d(D.intensity, 0, 15), R = d(D.fadeDuration, 0, 15), E = d(D.duration, 0, 15);
+      f.push(x << 4 | q), f.push(S << 4 | A), f.push(R << 4 | E);
     }
     f.pop();
     const b = [
@@ -1157,92 +1213,94 @@ class bt extends EventTarget {
   _onInputReport({ data: e, reportId: n, device: o }) {
     if (!e)
       return;
-    const a = se(
+    const r = ie(
       new Uint8Array([n]),
       new Uint8Array(e.buffer)
-    ), p = Array.from(a).map((u) => u.toString(16).padStart(2, "0")).join("");
-    let s = {
-      inputReportID: Ot(a, p)
+    ), d = Array.from(r).map((u) => u.toString(16).padStart(2, "0")).join("");
+    let i = {
+      inputReportID: Ht(r, d)
     };
     switch (n) {
       case 63: {
-        s = {
-          ...s,
-          buttonStatus: Qt(a, p),
-          analogStick: Gt(a, p),
-          filter: Wt(a, p)
+        i = {
+          ...i,
+          buttonStatus: Qt(r, d),
+          analogStick: $t(r, d),
+          filter: Wt(r, d)
         };
         break;
       }
       case 33:
       case 48: {
-        if (s = {
-          ...s,
-          timer: jt(a, p),
-          batteryLevel: Jt(a, p),
-          connectionInfo: Tt(a, p),
-          buttonStatus: $t(
-            a,
-            p
+        if (i = {
+          ...i,
+          timer: Ot(r, d),
+          batteryLevel: jt(r, d),
+          connectionInfo: Jt(r, d),
+          buttonStatus: Tt(
+            r,
+            d
           ),
-          analogStickLeft: Kt(a, p),
-          analogStickRight: Vt(
-            a,
-            p
+          analogStickLeft: Vt(r, d),
+          analogStickRight: Kt(
+            r,
+            d
           ),
-          vibrator: Xt(a, p)
-        }, n === 33 && (s = {
-          ...s,
-          ack: Yt(a, p),
-          subcommandID: Zt(a, p),
+          vibrator: Xt(r, d)
+        }, n === 33 && (i = {
+          ...i,
+          ack: Yt(r, d),
+          subcommandID: Zt(r, d),
           subcommandReplyData: zt(
-            a,
-            p
+            r,
+            d
           ),
-          deviceInfo: Ht(a)
+          deviceInfo: Pt(r)
         }), n === 48) {
           const u = te(
-            a,
-            p,
+            r,
+            d,
             this.ringConEnabled
           ), l = ee(
-            a,
-            p,
+            r,
+            d,
             this.ringConEnabled
-          ), r = _t(
-            l.map((w) => w.map((b) => b.rps ?? 0))
-          ), f = _t(
-            l.map((w) => w.map((b) => b.dps ?? 0))
-          ), M = ne(
-            u.map((w) => [
-              w.x.acc ?? 0,
-              w.y.acc ?? 0,
-              w.z.acc ?? 0
+          );
+          this.ringConEnabled && this.processRingConGyroCalibration(l);
+          const a = Mt(
+            l.map((y) => y.map((b) => b.rps ?? 0))
+          ), f = Mt(
+            l.map((y) => y.map((b) => b.dps ?? 0))
+          ), w = ne(
+            u.map((y) => [
+              y.x.acc ?? 0,
+              y.y.acc ?? 0,
+              y.z.acc ?? 0
             ])
           );
-          this.madgwick.update(r.x, r.y, r.z, M.x, M.y, M.z), s = {
-            ...s,
+          this.madgwick.update(a.x, a.y, a.z, w.x, w.y, w.z), i = {
+            ...i,
             accelerometers: u,
             gyroscopes: l,
-            actualAccelerometer: M,
-            actualGyroscope: { dps: f, rps: r },
-            actualOrientation: Pt(
+            actualAccelerometer: w,
+            actualGyroscope: { dps: f, rps: a },
+            actualOrientation: Dt(
               this.lastValues,
-              r,
-              M,
+              a,
+              w,
               o.productId
             ),
-            actualOrientationQuaternion: Dt(
+            actualOrientationQuaternion: Nt(
               this.quaternion
             ),
             quaternion: this.quaternion,
-            ...this.ringConEnabled ? { ringCon: oe(a, p) } : {}
+            ...this.ringConEnabled ? { ringCon: oe(r, d) } : {}
           };
         }
         break;
       }
     }
-    s.deviceInfo?.type && this._receiveDeviceInfo(s.deviceInfo), s.batteryLevel?.level && this._receiveBatteryLevel(s.batteryLevel), this._receiveInputEvent(s);
+    i.deviceInfo?.type && this._receiveDeviceInfo(i.deviceInfo), i.batteryLevel?.level && this._receiveBatteryLevel(i.batteryLevel), this._receiveInputEvent(i);
   }
   /**
    * Dispatches a "deviceinfo" custom event with the provided device information as its detail.
@@ -1267,7 +1325,7 @@ class bt extends EventTarget {
   _receiveInputEvent(e) {
   }
 }
-class ie extends bt {
+class se extends bt {
   /**
    * Handles an input event packet by removing specific button statuses and dispatching a custom "hidinput" event.
    *
@@ -1291,7 +1349,7 @@ class ie extends bt {
     n.x = void 0, n.y = void 0, n.b = void 0, n.a = void 0, n.plus = void 0, n.r = void 0, n.zr = void 0, n.home = void 0, n.rightStick = void 0, this.dispatchEvent(new CustomEvent("hidinput", { detail: e }));
   }
 }
-class ce extends bt {
+class re extends bt {
   /**
    * Handles an input event packet from the Joy-Con device, sanitizes specific button statuses by setting them to `undefined`,
    * and dispatches a "hidinput" custom event with the modified packet as its detail.
@@ -1303,7 +1361,7 @@ class ce extends bt {
     n.up = void 0, n.down = void 0, n.left = void 0, n.right = void 0, n.minus = void 0, n.l = void 0, n.zl = void 0, n.capture = void 0, n.leftStick = void 0, this.dispatchEvent(new CustomEvent("hidinput", { detail: e }));
   }
 }
-class re extends bt {
+class ce extends bt {
   /**
    * Dispatches a "hidinput" custom event with the provided packet as its detail.
    *
@@ -1315,23 +1373,23 @@ class re extends bt {
 }
 const ae = async (t) => {
   let e = null;
-  return t.productId === 8198 ? e = new ie(t) : t.productId === 8199 && t.productName === "Joy-Con (R)" && (e = new ce(t)), e || (e = new re(t)), await e.open(), await e.enableUSBHIDJoystickReport(), await e.enableStandardFullMode(), await e.enableIMUMode(), e;
-}, yt = /* @__PURE__ */ new Map(), mt = [], gt = (t) => {
-  const e = mt.indexOf(t);
-  return e >= 0 ? e : (mt.push(t), mt.length - 1);
-}, wt = async (t) => {
-  const e = gt(t);
+  return t.productId === 8198 ? e = new se(t) : t.productId === 8199 && t.productName === "Joy-Con (R)" && (e = new re(t)), e || (e = new ce(t)), await e.open(), await e.enableUSBHIDJoystickReport(), await e.enableStandardFullMode(), await e.enableIMUMode(), e;
+}, It = /* @__PURE__ */ new Map(), vt = [], _t = (t) => {
+  const e = vt.indexOf(t);
+  return e >= 0 ? e : (vt.push(t), vt.length - 1);
+}, yt = async (t) => {
+  const e = _t(t);
   console.log(
     `HID connected: ${e} ${t.productId.toString(16)} ${t.productName}`
-  ), yt.set(e, await ae(t));
+  ), It.set(e, await ae(t));
 }, le = async (t) => {
-  const e = gt(t);
+  const e = _t(t);
   console.log(
     `HID disconnected: ${e} ${t.productId.toString(16)} ${t.productName}`
-  ), yt.delete(e);
+  ), It.delete(e);
 };
 navigator.hid.addEventListener("connect", async ({ device: t }) => {
-  wt(t);
+  yt(t);
 });
 navigator.hid.addEventListener("disconnect", ({ device: t }) => {
   le(t);
@@ -1339,7 +1397,7 @@ navigator.hid.addEventListener("disconnect", ({ device: t }) => {
 document.addEventListener("DOMContentLoaded", async () => {
   const t = await navigator.hid.getDevices();
   for (const e of t)
-    await wt(e);
+    await yt(e);
 });
 const ue = async () => {
   const t = [
@@ -1352,15 +1410,15 @@ const ue = async () => {
     const [e] = await navigator.hid.requestDevice({ filters: t });
     if (!e)
       return;
-    await wt(e);
+    await yt(e);
   } catch (e) {
     e instanceof Error ? console.error(e.name, e.message) : console.error(e);
   }
 };
 export {
-  re as GeneralController,
-  ie as JoyConLeft,
-  ce as JoyConRight,
+  ce as GeneralController,
+  se as JoyConLeft,
+  re as JoyConRight,
   ue as connectJoyCon,
-  yt as connectedJoyCons
+  It as connectedJoyCons
 };

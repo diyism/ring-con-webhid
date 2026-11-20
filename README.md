@@ -66,8 +66,11 @@ Open [http://127.0.0.1:8080](http://127.0.0.1:8080), then:
 3. Insert the right Joy-Con into the Ring-Con.
 4. Click **Connect Ring-Con**. The page sends the Ring-Con initialization
    commands, including `0x5C`, `0x5A`, and `0x40 0x03`.
-5. Enable **Show debug info** and scroll to the bottom.
-6. Squeeze and pull the Ring-Con. **Ring-Con Strain** should follow the physical
+5. Keep the right Joy-Con and Ring-Con still on the table, then click
+   **Calibrate Gyroscope**. Leave them still for about one second while the
+   first 60 external-IMU reports are collected.
+6. Enable **Show debug info** and scroll to the bottom.
+7. Squeeze and pull the Ring-Con. **Ring-Con Strain** should follow the physical
    force, not the right Joy-Con's pitch.
 
 If the page was already open while the source was updated, reload it once with
@@ -92,6 +95,8 @@ that option can take the Ring-Con away from the right Joy-Con.
   `package.json`; update the repository before testing.
 - If Ring-Con Strain follows right-Joy-Con pitch, stop the old server, run
   `npm run server` again, hard-refresh the page, and reconnect the devices.
+- If the right Joy-Con starts spinning again, leave the controller still and
+  click **Calibrate Gyroscope** to repeat the external-gyroscope calibration.
 - A successful **Ring-Con connected** message alone is not sufficient; verify
   that squeezing and pulling the Ring-Con changes the Strain value.
 
