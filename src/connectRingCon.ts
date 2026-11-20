@@ -90,9 +90,10 @@ export const connectRingCon = async (device: HIDDevice): Promise<void> => {
     timeoutErrorMessage: 'ring-con not found.',
   });
   const enableRingConIMUMode = defineSendReportAsyncFunction({
-    // Ring-Con firmware requires the MaybeRingcon IMU mode before the
-    // external-device format and polling commands take effect.
-    subcommand: [0x40, 0x03],
+    // Keep the standard 6-axis IMU mode. The Ring-Con external-device
+    // configuration below multiplexes flex into the third accel frame while
+    // preserving the normal Joy-Con gyro samples.
+    subcommand: [0x40, 0x01],
     expectedReport: {
       14: 0x40,
     },

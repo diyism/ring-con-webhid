@@ -599,11 +599,11 @@ export function parseAccelerometers(
   ];
 
   if (ringConEnabled) {
-    // 0x40 0x03 changes the 0x30 payload to the Ring-Con external-IMU
-    // format. In that format only the first XYZ triple is the acceleration
-    // vector; the remaining fields are Ring-Con metadata and strain data,
-    // not two more standard Joy-Con acceleration samples.
-    return accelerometers.slice(0, 1);
+    // With the standard IMU mode (0x40 0x01), Ring-Con flex replaces the
+    // third acceleration frame. The first two frames remain valid Joy-Con
+    // acceleration samples, so exclude only the third frame from sensor
+    // fusion.
+    return accelerometers.slice(0, 2);
   }
 
   return accelerometers;
@@ -678,11 +678,9 @@ export function parseGyroscopes(
   ];
 
   if (ringConEnabled) {
-    // In Ring-Con external-IMU mode the second gyro triple (rawData[31..36])
-    // is the stable motion vector used by the Ring-Con driver. The first
-    // triple belongs to Ring-Con orientation fields and the third triple is
-    // not a standard Joy-Con gyro sample in this mode.
-    return gyroscopes.slice(1, 2);
+    // Ring-Con is initialized while keeping the standard IMU mode (0x40 0x01),
+    // so all three standard Joy-Con gyro samples remain available.
+    return gyroscopes;
   }
 
   return gyroscopes;
@@ -736,11 +734,19 @@ export function parseRingCon(
   rawData: Uint8Array,
   data: string
 ): RingConDataPacket & ParsedPacketData {
+  // Ring-Con flex occupies the third IMU frame's accel_y slot. Reuse the
+  // normal 0x30 frame parser here instead of treating this as a mode-specific
+  // standalone byte offset.
+  const thirdFrameAccelY = parseAccelerometers(rawData, data, false)[2].y;
+  const strainBytes = thirdFrameAccelY._raw;
+
   return {
-    // rawData includes the report ID at index 0; Ring-Con bytes are
-    // event.data[38..39], therefore fullData[39..40].
-    _raw: rawData.slice(39, 41),
-    _hex: data.slice(78, 82),
-    strain: new DataView(rawData.buffer, 39, 2).getInt16(0, true),
+    _raw: strainBytes,
+    _hex: thirdFrameAccelY._hex,
+    strain: new DataView(
+      strainBytes.buffer,
+      strainBytes.byteOffset,
+      strainBytes.byteLength
+    ).getInt16(0, true),
   };
 }

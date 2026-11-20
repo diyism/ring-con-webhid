@@ -379,7 +379,7 @@ class JoyCon extends EventTarget {
   }
 
   /**
-   * Ring-Con external IMU reports contain a large, device-specific gyro bias.
+   * Ring-Con mode reports can contain a device-specific gyro bias.
    * Reset the filter after initialization so the reports received while the
    * MCU is changing modes cannot poison the new Ring-Con orientation state.
    */
@@ -401,7 +401,7 @@ class JoyCon extends EventTarget {
   }
 
   /**
-   * Removes the stationary Ring-Con gyro bias from the parsed external IMU.
+   * Removes the stationary Ring-Con gyro bias from the parsed gyro samples.
    * The page initializes Ring-Con while it is resting on a stable surface, so
    * this avoids depending on Joy-Con SPI calibration being exposed by WebHID.
    */

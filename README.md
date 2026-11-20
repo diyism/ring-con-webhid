@@ -65,10 +65,10 @@ Open [http://127.0.0.1:8080](http://127.0.0.1:8080), then:
 2. Select the right and left Joy-Cons in the WebHID chooser and connect them.
 3. Insert the right Joy-Con into the Ring-Con.
 4. Click **Connect Ring-Con**. The page sends the Ring-Con initialization
-   commands, including `0x5C`, `0x5A`, and `0x40 0x03`.
+   commands, including `0x5C`, `0x5A`, and standard IMU mode `0x40 0x01`.
 5. Keep the right Joy-Con and Ring-Con still on the table, then click
    **Calibrate Gyroscope**. Leave them still for about one second while the
-   first 60 external-IMU reports are collected.
+   first 60 Ring-Con-mode reports are collected.
 6. Enable **Show debug info** and scroll to the bottom.
 7. Squeeze and pull the Ring-Con. **Ring-Con Strain** should follow the physical
    force, not the right Joy-Con's pitch.
