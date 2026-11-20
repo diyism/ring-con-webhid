@@ -557,8 +557,8 @@ function zt(t, e) {
     _hex: e.slice(15)
   };
 }
-function te(t, e) {
-  return [
+function te(t, e, n = !1) {
+  const o = [
     {
       x: {
         _raw: t.slice(13, 15),
@@ -620,6 +620,7 @@ function te(t, e) {
       }
     }
   ];
+  return n ? o.slice(0, 2) : o;
 }
 function ee(t, e) {
   return [
@@ -1201,7 +1202,8 @@ class bt extends EventTarget {
         }), n === 48) {
           const u = te(
             a,
-            p
+            p,
+            this.ringConEnabled
           ), l = ee(a, p), r = _t(
             l.map((w) => w.map((b) => b.rps ?? 0))
           ), f = _t(

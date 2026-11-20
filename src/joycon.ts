@@ -663,7 +663,8 @@ class JoyCon extends EventTarget {
         if (reportId === 0x30) {
           const accelerometers = PacketParser.parseAccelerometers(
             fullData,
-            hexData
+            hexData,
+            this.ringConEnabled
           );
           const gyroscopes = PacketParser.parseGyroscopes(fullData, hexData);
           const rps = PacketParser.calculateActualGyroscope(
