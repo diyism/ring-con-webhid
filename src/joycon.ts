@@ -666,7 +666,11 @@ class JoyCon extends EventTarget {
             hexData,
             this.ringConEnabled
           );
-          const gyroscopes = PacketParser.parseGyroscopes(fullData, hexData);
+          const gyroscopes = PacketParser.parseGyroscopes(
+            fullData,
+            hexData,
+            this.ringConEnabled
+          );
           const rps = PacketParser.calculateActualGyroscope(
             gyroscopes.map((g) => g.map((v) => v.rps ?? 0))
           );

@@ -598,17 +598,23 @@ export function parseAccelerometers(
     },
   ];
 
-  // In Ring-Con mode rawData[39..40] is multiplexed with Ring-Con strain.
-  // That range is the Y component of the third accelerometer sample in the
-  // normal 0x30 report, so do not feed that incomplete sample into AHRS.
-  return ringConEnabled ? accelerometers.slice(0, 2) : accelerometers;
+  if (ringConEnabled) {
+    // 0x40 0x03 changes the 0x30 payload to the Ring-Con external-IMU
+    // format. In that format only the first XYZ triple is the acceleration
+    // vector; the remaining fields are Ring-Con metadata and strain data,
+    // not two more standard Joy-Con acceleration samples.
+    return accelerometers.slice(0, 1);
+  }
+
+  return accelerometers;
 }
 
 export function parseGyroscopes(
   rawData: Uint8Array,
-  data: string
+  data: string,
+  ringConEnabled = false
 ): (ParsedPacketData & GyroscopePacket)[][] {
-  return [
+  const gyroscopes = [
     [
       {
         _raw: rawData.slice(19, 21), // index 19,20
@@ -670,6 +676,16 @@ export function parseGyroscopes(
       },
     ],
   ];
+
+  if (ringConEnabled) {
+    // In Ring-Con external-IMU mode the second gyro triple (rawData[31..36])
+    // is the stable motion vector used by the Ring-Con driver. The first
+    // triple belongs to Ring-Con orientation fields and the third triple is
+    // not a standard Joy-Con gyro sample in this mode.
+    return gyroscopes.slice(1, 2);
+  }
+
+  return gyroscopes;
 }
 
 export function calculateActualAccelerometer(accelerometers: number[][]) {
