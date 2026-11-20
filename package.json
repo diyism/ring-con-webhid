@@ -10,7 +10,7 @@
     "controller"
   ],
   "scripts": {
-    "server": "shx cp dist/joy-con-webhid.es.js demo; npx http-server demo",
+    "server": "npm run build && shx cp dist/joy-con-webhid.es.js demo && npx http-server demo -c-1",
     "start": "npx http-server",
     "lint": "npx eslint . --ext .ts,.js,.mjs --fix",
     "prepare": "npm run lint && npm run fix && npm run build",

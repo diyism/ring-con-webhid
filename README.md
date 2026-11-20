@@ -1,46 +1,99 @@
 forked from https://github.com/tomayac/joy-con-webhid
 
-connect right joycon to linux bluetooth:
+# Ring-Con quick start
 
-    long press sync key on joycon to start pairing,
-    don't use "bluetoothctl scan on", joycon protocol is so old, to use:
-    $ sudo bluetoothctl
-      scan off
-      scan bredr
-      pair xx:xx:xx:xx:xx:xx            #right joycon
-      yes
-      connect xx:xx:xx:xx:xx:xx
-      info xx:xx:xx:xx:xx:xx
-      scan bredr
-      pair xx:xx:xx:xx:xx:xx            #left joycon
-      yes
-      connect xx:xx:xx:xx:xx:xx
-      info xx:xx:xx:xx:xx:xx
-    it will show "paired:yes", "bonded:yes", and "Connected:yes"
-    
+This demo reads the Ring-Con through the right Joy-Con. The Ring-Con must be
+physically attached to the right Joy-Con before initialization.
 
-insert joycon into ringcon, then activate ringcon in linux:
+## Requirements
 
-(初始化时, 往joy-con right发送0x5C、0x5A 命令, 让joy-con right连接Ring-Con，还要发送命令：0x40 0x03 以启用 Ring-Con的MaybeRingcon IMU 模式, 否则Ring-Con Strain读到的是普通Joy-Con IMU(俯仰数据). 初始化流程参考:https://github.com/creamerburger/vibe-ring-windows)
+- Linux with Bluetooth support.
+- Node.js and npm.
+- Chrome or Chromium with WebHID support, opened on the same computer as the
+  Joy-Cons.
 
-    $ git clone https://github.com/diyism/ring-con-webhid
-    $ cd ring-con-webhid
-    $ npm install
-    $ npm run server
+## Pair the Joy-Cons on Linux
 
-    in your browser, open http://127.0.0.1:8080
-    Click “Connect Joy-Cons”, select “Joy-Con (R)”, and click “Connect” to connect your Joy-Con to this web page
-    Click “Connect Ring-Con”, it will trigger Joy-Con to connect to Ring-Con, otherwise the “Ring-Con Strain” will show right Joy-Con’s pitch instead.
-    Tick “Show debug info” and scroll to the bottom of the page
-    The “Ring-Con Strain” meter will display the current pulling or squeezng intensity.
+Press and hold the sync button on a Joy-Con, then pair each Joy-Con separately.
+The older Joy-Con Bluetooth protocol works more reliably with BR/EDR discovery:
 
-in your suyu/yuzu/eden/... emulator:
+```bash
+sudo bluetoothctl
+power on
+agent on
+default-agent
+scan off
+scan bredr
+devices
+pair XX:XX:XX:XX:XX:XX
+connect XX:XX:XX:XX:XX:XX
+info XX:XX:XX:XX:XX:XX
+```
 
-     settings >> controls >>
-     >> player 1 >>  connect controller: right joycon,  input device: right joycon 1
-     >> player 2 >>  connect controller: dual joycon,   input device: left joycon 1
-     don't do ">> advanced >>  other  >> enable direct joycon driver"
-     don't do ">> advacned >>  emulated devices >> ring controller >> configure >> enable ring input", it will disconnect ringcon from joycon
+Repeat `pair` and `connect` for the other Joy-Con. Before opening the web page,
+confirm that both devices report `Paired: yes` and `Connected: yes`.
+
+If `scan off` reports that discovery is already stopped, that is harmless.
+Run `scan bredr` again when a Joy-Con is not listed. Do not use `scan on` for
+this pairing procedure.
+
+## Run the current source after cloning or updating
+
+```bash
+git clone https://github.com/diyism/ring-con-webhid.git
+cd ring-con-webhid
+npm install
+npm run server
+```
+
+After an update, use the same procedure:
+
+```bash
+git pull --ff-only
+npm install                  # safe to repeat; updates dependencies if needed
+npm run server
+```
+
+`npm run server` first runs the TypeScript/Vite build, copies the fresh bundle
+to `demo/`, and starts the HTTP server with browser caching disabled. Do not
+start the server by opening an old `demo/` copy or by copying an old `dist/`
+file manually.
+
+Open [http://127.0.0.1:8080](http://127.0.0.1:8080), then:
+
+1. Click **Connect Joy-Cons**.
+2. Select the right and left Joy-Cons in the WebHID chooser and connect them.
+3. Insert the right Joy-Con into the Ring-Con.
+4. Click **Connect Ring-Con**. The page sends the Ring-Con initialization
+   commands, including `0x5C`, `0x5A`, and `0x40 0x03`.
+5. Enable **Show debug info** and scroll to the bottom.
+6. Squeeze and pull the Ring-Con. **Ring-Con Strain** should follow the physical
+   force, not the right Joy-Con's pitch.
+
+If the page was already open while the source was updated, reload it once with
+`Ctrl+Shift+R` before reconnecting the Joy-Cons.
+
+## Emulator controller layout
+
+In Suyu, Yuzu, Eden, or a similar emulator, use:
+
+```text
+Player 1: connect controller = right Joy-Con; input device = right Joy-Con 1
+Player 2: connect controller = dual Joy-Cons; input device = left Joy-Con 1
+```
+
+Do not enable **Advanced > Other > Enable direct Joy-Con driver**. Also do not
+enable **Advanced > Emulated devices > Ring Controller > Enable Ring Input**;
+that option can take the Ring-Con away from the right Joy-Con.
+
+## Troubleshooting after `git pull`
+
+- If `npm run server` does not print a build step, the checkout has an old
+  `package.json`; update the repository before testing.
+- If Ring-Con Strain follows right-Joy-Con pitch, stop the old server, run
+  `npm run server` again, hard-refresh the page, and reconnect the devices.
+- A successful **Ring-Con connected** message alone is not sufficient; verify
+  that squeezing and pulling the Ring-Con changes the Strain value.
 
 ===============================================================================================
 
