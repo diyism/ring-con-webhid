@@ -21,6 +21,8 @@ connect right joycon to linux bluetooth:
 
 insert joycon into ringcon, then activate ringcon in linux:
 
+(初始化时, 往joy-con right发送0x5C、0x5A 命令, 让joy-con right连接Ring-Con，还要发送命令：0x40 0x03 以启用 Ring-Con的MaybeRingcon IMU 模式, 否则Ring-Con Strain读到的是普通Joy-Con IMU(俯仰数据). 初始化流程参考:https://github.com/creamerburger/vibe-ring-windows)
+
     $ git clone https://github.com/diyism/ring-con-webhid
     $ cd ring-con-webhid
     $ npm install
